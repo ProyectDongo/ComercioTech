@@ -69,7 +69,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "ComercioTechh.wsgi.application"
 
-from config import DATABASE_CONFIG
+Path: ComercioTechh/ComercioTechh/config.py
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
