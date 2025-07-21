@@ -1,0 +1,31 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Inicio - ComercioTech{% endblock %}
+
+{% block content %}
+<div class="welcome-message">
+    <h2>Bienvenido a ComercioTech</h2>
+    <p>Gestiona tu negocio de manera eficiente con nuestro sistema integral</p>
+    
+    <div class="options-grid">
+        <div class="option-card">
+            <h3>Clientes</h3>
+            <p>Administra tu base de clientes</p>
+            <a href="{% url 'cliente_list' %}">Ver Clientes</a>
+        </div>
+        
+        <div class="option-card">
+            <h3>Productos</h3>
+            <p>Gestiona tu catálogo de productos</p>
+            <a href="{% url 'producto_list' %}">Ver Productos</a>
+        </div>
+        
+        <div class="option-card">
+            <h3>Pedidos</h3>
+            <p>Administra tus pedidos y ventas</p>
+            <a href="{% url 'pedido_list' %}">Ver Pedidos</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

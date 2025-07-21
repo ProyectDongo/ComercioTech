@@ -1,0 +1,39 @@
+
+{% extends 'base.html' %}
+
+{% block title %}{% if object %}Editar{% else %}Crear{% endif %} Cliente{% endblock %}
+
+{% block content %}
+<h2>{% if object %}Editar{% else %}Crear{% endif %} Cliente</h2>
+<form method="post">
+    {% csrf_token %}
+    
+    <div class="form-group">
+        {{ form.nombre.label_tag }}
+        {{ form.nombre }}
+        {% if form.nombre.errors %}
+            <div class="error">{{ form.nombre.errors }}</div>
+        {% endif %}
+    </div>
+    
+    <div class="form-group">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        {% if form.email.errors %}
+            <div class="error">{{ form.email.errors }}</div>
+        {% endif %}
+    </div>
+    
+    <div class="form-group">
+        {{ form.telefono.label_tag }}
+        {{ form.telefono }}
+        {% if form.telefono.errors %}
+            <div class="error">{{ form.telefono.errors }}</div>
+        {% endif %}
+    </div>
+    
+    
+    <button type="submit" class="btn btn-success">Guardar Cliente</button>
+    <a href="{% url 'cliente_list' %}" class="btn" style="margin-left: 10px;">Cancelar</a>
+</form>
+{% endblock %}

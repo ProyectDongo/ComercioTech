@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if object %}Editar{% else %}Crear{% endif %} Pedido{% endblock %}
+
+{% block content %}
+<h2>{% if object %}Editar{% else %}Crear{% endif %} Pedido</h2>
+
+<form method="post" id="pedido-form">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div class="form-group">
+        {{ form.cliente.label_tag }} {{ form.cliente }}
+        {{ form.cliente.errors }}
+    </div>
+    <div class="form-group">
+        {{ form.estado.label_tag }} {{ form.estado }}
+        {{ form.estado.errors }}
+    </div>
+
+    <h3>Productos</h3>
+    {{ formset.management_form }}
+    <div id="formset-container">
+        {% for f in formset %}
+            <div class="form-group product-form">
+                {{ f.id }}  {# hidden id si viene de edición #}
+                {{ f.producto.label_tag }} {{ f.producto }} {{ f.producto.errors }}
+                {{ f.cantidad.label_tag }} {{ f.cantidad }} {{ f.cantidad.errors }}
+                {% if formset.can_delete %}
+                    <label>{{ f.DELETE }} Eliminar</label>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <button type="button" id="add-product" class="btn btn-secondary">
+        Agregar Producto
+    </button>
+    <button type="submit" class="btn btn-success">Guardar Pedido</button>
+    <a href="{% url 'pedido_list' %}" class="btn btn-primary">Cancelar</a>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const addBtn = document.getElementById('add-product');
+    const container = document.getElementById('formset-container');
+    const totalForms = document.getElementById('id_form-TOTAL_FORMS');
+
+    if (!addBtn || !container || !totalForms) {
+        console.error('Faltan elementos clave para el formset dinámico.');
+        return;
+    }
+
+    addBtn.addEventListener('click', () => {
+        const formCount = parseInt(totalForms.value, 10);
+        const lastForm = container.querySelector('.product-form:last-child');
+        const newForm = lastForm.cloneNode(true);
+
+        // Actualizar índices en name/id
+        newForm.innerHTML = newForm.innerHTML.replace(/form-(\d)+/g, `form-${formCount}`);
+        // Limpiar valores
+        newForm.querySelectorAll('input, select').forEach(i => {
+            if (i.type === 'checkbox') i.checked = false;
+            else if (i.name.endsWith('-id')) i.remove();
+            else i.value = '';
+        });
+
+        container.appendChild(newForm);
+        totalForms.value = formCount + 1;
+    });
+});
+</script>
+{% endblock %}
